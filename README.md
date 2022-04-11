@@ -1,7 +1,7 @@
 # 05391-bakeoff3
 
 ## Scaffold Code
-[Can be found here](https://github.com/ikang9712/05391-bakeoff3/tree/main/TextEntryScaffold)
+[Download TextEntryScaffold.pde from here.](https://github.com/ikang9712/05391-bakeoff3/tree/main/TextEntryScaffold)
 ### Setup & Run on Android mode
 
 ### Scaffold Summary

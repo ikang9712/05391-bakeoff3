@@ -1,17 +1,21 @@
 # 05391-bakeoff3
 
-## Scaffold Demo
+## Scaffold Code
+[Can be found here](https://github.com/ikang9712/05391-bakeoff3/tree/main/TextEntryScaffold)
+### Setup & Run on Android mode
+
+### Scaffold Summary
 <p align="center">
   <img align="center" src="./scaffold_img1.png" width="400" height="400">
 </p>
 
-### Requirements
+#### Requirements
 - Target phrase is given.
   - Target phrase only contains alphabets and space. No punctuation, no numbers. 
 - User completes the target phrase
 
 
-### User Interaction
+#### User Interaction
 <ol>
   <li>A user chooses an alphabet by clicking red and green squares. </li>
   <ol>
@@ -26,7 +30,8 @@
 </ol>
 
 
-## Initial Ideas
+
+## Preliminary Ideas
 
 ## Prototype 1 Implementation
 

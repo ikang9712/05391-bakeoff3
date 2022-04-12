@@ -81,17 +81,18 @@ void draw()
   fill(0);
   int fontSize = 10;
   textSize(fontSize);
-  float radSpacing = radians((370/25));
+  float radSpacing = radians((360/25));
   PVector v1 = PVector.fromAngle(radians(-90)); // start at top of the clock
+  v1.rotate(radSpacing/2); // make sure the letter appear at the CENTER of their slice
   v1.setMag(sizeOfInputArea/2-fontSize/2); // radius of cricle - leave font space
 
   for(int letter = 97; letter <= 122; letter++) { // ascii
-    text(char(letter), v1.x, v1.y+2); // "+2" offsets it a little bit
+    textAlign(CENTER);
+    text(char(letter), v1.x-1, v1.y+2); // "-1" and "+2" offsets it towards the center a little bit
     v1.rotate(radSpacing);
-
   }
-  
   popMatrix();
+  textSize(25); // restore text size
   
 
 
@@ -122,19 +123,7 @@ void draw()
     rect(600, 600, 200, 200); //draw next button
     fill(255);
     text("NEXT > ", 650, 650); //draw next label
-
-    //example design draw code
-    fill(255, 0, 0); //red button
-    rect(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2); //draw left red button
-    fill(0, 255, 0); //green button
-    rect(width/2-sizeOfInputArea/2+sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2); //draw right green button
-    textAlign(CENTER);
-    fill(200);
-    text("" + currentLetter, width/2, height/2-sizeOfInputArea/4); //draw current letter
   }
- 
- 
-  //drawFinger(); //no longer needed as we'll be deploying to an actual touschreen device
 }
 
 //my terrible implementation you can entirely replace
@@ -146,30 +135,6 @@ boolean didMouseClick(float x, float y, float w, float h) //simple function to d
 //my terrible implementation you can entirely replace
 void mousePressed()
 {
-  if (didMouseClick(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2)) //check if click in left button
-  {
-    currentLetter --;
-    if (currentLetter<'_') //wrap around to z
-      currentLetter = 'z';
-  }
-
-  if (didMouseClick(width/2-sizeOfInputArea/2+sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2)) //check if click in right button
-  {
-    currentLetter ++;
-    if (currentLetter>'z') //wrap back to space (aka underscore)
-      currentLetter = '_';
-  }
-
-  if (didMouseClick(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2, sizeOfInputArea, sizeOfInputArea/2)) //check if click occured in letter area
-  {
-    if (currentLetter=='_') //if underscore, consider that a space bar
-      currentTyped+=" ";
-    else if (currentLetter=='`' & currentTyped.length()>0) //if `, treat that as a delete command
-      currentTyped = currentTyped.substring(0, currentTyped.length()-1);
-    else if (currentLetter!='`') //if not any of the above cases, add the current letter to the typed string
-      currentTyped+=currentLetter;
-  }
-
   //You are allowed to have a next button outside the 1" area
   if (didMouseClick(600, 600, 200, 200)) //check if click is in next button
   {
@@ -177,6 +142,29 @@ void mousePressed()
   }
 }
 
+void mouseMoved(){
+  // Determine which "slice of the circle", or, which letter, the user is hovering over
+  
+  // Make sure the mouse is on the circular keyboard
+  if(sqrt(sq(mouseX-width/2) + sq(mouseY-height/2)) <= sizeOfInputArea/2 + 1){ // "+1" offset, give a little bit of buffer
+    cursor(HAND);
+    PVector currVec = new PVector(mouseX - width/2, mouseY - width/2);
+    float currDegree = degrees(currVec.heading()) + 90; // "+90" so that top of the clock is 0
+    if(currDegree < 0) {
+      currDegree += 360;
+    }
+    print(currDegree + "\n");
+    
+    // calculate what letter it is
+    int letter = 97 + int(currDegree / (360/25)); // 97 = "a" in ascii
+    print(letter + "|" + char(letter) + "\n");
+  } else {
+    cursor(ARROW);
+    
+  }
+  
+  
+}
 
 void nextTrial()
 {

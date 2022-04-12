@@ -86,7 +86,6 @@ void draw()
   textSize(fontSize);
   float radSpacing = radians(sliceSizeDeg);
   PVector v1 = PVector.fromAngle(radians(-90)); // start at top of the clock
-  v1.rotate(radSpacing/2); // make sure the letter appear at the CENTER of their slice
   v1.setMag(sizeOfInputArea/2-fontSize/2-3); // radius of cricle - leave font space
 
   for(int letter = 97; letter <= 122; letter++) { // ascii
@@ -188,7 +187,8 @@ void mouseMoved(){
     }
     
     // calculate what letter it is
-    int letter = 97 + int(currDegree / (sliceSizeDeg)); // 97 = "a" in ascii
+    int letter = 97 + int((currDegree+sliceSizeDeg/2) / (sliceSizeDeg)); // 97 = "a" in ascii + round to nearest slice
+    if(letter > 122) {letter = 122;} // it happens sometimes... 
     currentLetter = char(letter);
     letterSelected = true;
     print(currDegree + " --> " + letter + " | " + char(letter) + "\n");

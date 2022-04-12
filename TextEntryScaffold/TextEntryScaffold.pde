@@ -202,7 +202,7 @@ boolean didMouseHoverMatrix(float x, float y, float w, float h) //simple functio
 {
   x += width/2+2;
   y += height/2+2;
-  return (mouseX > x && mouseX<x+w && mouseY>y && mouseY<y+h); //check to see if it is in button bounds
+  return (mouseX >= x && mouseX<=x+w && mouseY>=y && mouseY<=y+h); //check to see if it is in button bounds
 }
 
 void mouseMoved() {
@@ -221,7 +221,6 @@ void mouseMoved() {
       letterSelected = true;
       currCenterX = leftLedge + firstOffset + keyWidth*i + margin*i + keyWidth/2;
       currCenterY = firstY + keyHeight/2;
-      print(currentLetter);
       popMatrix();
       return;
     }
@@ -237,7 +236,6 @@ void mouseMoved() {
       letterSelected = true;
       currCenterX = leftLedge + secondOffset + keyWidth*i + margin*i + keyWidth/2;
       currCenterY = secondY + keyHeight/2;
-      print(currentLetter);
       popMatrix();
       return;
     }
@@ -253,18 +251,16 @@ void mouseMoved() {
       letterSelected = true;
       currCenterX = leftLedge + thirdOffset + keyWidth*i + margin*i + keyWidth/2;
       currCenterY = thirdY + keyHeight/2;
-      print(currentLetter);
       popMatrix();
       return;
     }
   }
   // big space bar
-  if(didMouseHoverMatrix(leftLedge, spaceY, sizeOfInputArea, spaceHeight)) {
+  if(didMouseHoverMatrix(leftLedge, spaceY-thirdSpaceGutter, sizeOfInputArea, spaceHeight+thirdSpaceGutter)) {
     currentLetter = ' ';
     letterSelected = true;
     currCenterX = 0;
     currCenterY = spaceY + spaceHeight/2;
-    print("[space]");
     popMatrix();
     return;
   }

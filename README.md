@@ -33,11 +33,11 @@
 
 ## Preliminary Ideas
 <ol>
-  <li> drag horizontally to change a letter, or symbol(spacebar). </li>
-  <li> drag up to enter currently chosen letter. </li>
-  <li> double tap to enter currently chosen letter. </li>
-  <li> drag down to remove the most recently entered letter from the entered text. </li>
-  <li> highlight the entered letter with green(matched) or red(unmatched). </li>
+  <li> Legal) drag horizontally to change a letter, or symbol(spacebar). </li>
+  <li> Legal) drag up to enter currently chosen letter. </li>
+  <li> Legal) double tap to enter currently chosen letter. </li>
+  <li> Legal) drag down to remove the most recently entered letter from the entered text. </li>
+  <li> Not Legal) highlight the entered letter with green(matched) or red(unmatched). </li>
 </ol>
 
 ## Prototype 1 Implementation

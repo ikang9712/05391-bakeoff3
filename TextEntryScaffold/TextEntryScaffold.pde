@@ -20,6 +20,9 @@ PImage finger;
 
 //Variables for my silly implementation. You can delete this:
 char currentLetter = 'a';
+boolean letterSelected = false;
+float currDegree = 0.0;
+float sliceSizeDeg = 360/25;
 
 //You can modify anything in here. This is just a basic implementation.
 void setup()
@@ -81,18 +84,38 @@ void draw()
   fill(0);
   int fontSize = 10;
   textSize(fontSize);
-  float radSpacing = radians((360/25));
+  float radSpacing = radians(sliceSizeDeg);
   PVector v1 = PVector.fromAngle(radians(-90)); // start at top of the clock
   v1.rotate(radSpacing/2); // make sure the letter appear at the CENTER of their slice
-  v1.setMag(sizeOfInputArea/2-fontSize/2); // radius of cricle - leave font space
+  v1.setMag(sizeOfInputArea/2-fontSize/2-3); // radius of cricle - leave font space
 
   for(int letter = 97; letter <= 122; letter++) { // ascii
     textAlign(CENTER);
     text(char(letter), v1.x-1, v1.y+2); // "-1" and "+2" offsets it towards the center a little bit
     v1.rotate(radSpacing);
   }
+  textSize(30);
+
+  // draw any enlarged selected letter
+  if(letterSelected) {    
+    // draw an arrow/line pointing towards the perimeter's letter
+    fill(150);
+    float start = (int(currentLetter)-97) * sliceSizeDeg;
+    //print("START: " + start + "\n");
+    arc(0, 0, sizeOfInputArea, sizeOfInputArea, radians(start-sliceSizeDeg/2-90), radians(start+sliceSizeDeg/2-90));
+
+    // actual letter
+    fill(150);
+    circle(0, 0, 60);
+    fill(255);
+    textAlign(CENTER);
+    text(currentLetter, 0-1, 0+8);
+  }
   popMatrix();
-  textSize(25); // restore text size
+    
+  //// draw an arrow/line pointing towards the perimeter's letter
+  //stroke(150);
+  //line(width/2, height/2, mouseX, mouseY);
   
 
 
@@ -140,6 +163,16 @@ void mousePressed()
   {
     nextTrial(); //if so, advance to next trial
   }
+  
+  if(didMouseClick(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2, sizeOfInputArea, sizeOfInputArea)) {
+      if(sqrt(sq(mouseX-width/2) + sq(mouseY-height/2)) <= sizeOfInputArea/2 + 1){ // "+1" offset, give a little bit of buffer
+        currentTyped+=currentLetter; // submit the letter
+      } else {
+        currentTyped += " "; // clicking on grey corner = space 
+      }
+  }
+
+
 }
 
 void mouseMoved(){
@@ -149,18 +182,20 @@ void mouseMoved(){
   if(sqrt(sq(mouseX-width/2) + sq(mouseY-height/2)) <= sizeOfInputArea/2 + 1){ // "+1" offset, give a little bit of buffer
     cursor(HAND);
     PVector currVec = new PVector(mouseX - width/2, mouseY - width/2);
-    float currDegree = degrees(currVec.heading()) + 90; // "+90" so that top of the clock is 0
+    currDegree = degrees(currVec.heading()) + 90; // "+90" so that top of the clock is 0
     if(currDegree < 0) {
       currDegree += 360;
     }
-    print(currDegree + "\n");
     
     // calculate what letter it is
-    int letter = 97 + int(currDegree / (360/25)); // 97 = "a" in ascii
-    print(letter + "|" + char(letter) + "\n");
+    int letter = 97 + int(currDegree / (sliceSizeDeg)); // 97 = "a" in ascii
+    currentLetter = char(letter);
+    letterSelected = true;
+    print(currDegree + " --> " + letter + " | " + char(letter) + "\n");
+    
   } else {
     cursor(ARROW);
-    
+    letterSelected = false;
   }
   
   

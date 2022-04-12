@@ -29,15 +29,22 @@
   </ol>
 </ol>
 
-
-
 ## Preliminary Ideas
 <ol>
-  <li> Legal) drag horizontally to change a letter, or symbol(spacebar). </li>
-  <li> Legal) drag up to enter currently chosen letter. </li>
-  <li> Legal) double tap to enter currently chosen letter. </li>
-  <li> Legal) drag down to remove the most recently entered letter from the entered text. </li>
-  <li> Not Legal) highlight the entered letter with green(matched) or red(unmatched). </li>
+  <li><p style="background-color: #235c0f; display:inline">Legal)</p> drag horizontally to change a letter, or symbol(spacebar). </li>
+  <li><p style="background-color: #235c0f; display:inline">Legal)</p> drag up to enter currently chosen letter. </li>
+  <li><p style="background-color: #235c0f; display:inline">Legal)</p> double tap to enter currently chosen letter. </li>
+  <li><p style="background-color: #235c0f; display:inline">Legal)</p> drag down to remove the most recently entered letter from the entered text. </li>
+  <li><p style="background-color: #6e2212; display:inline">Not Legal)</p> highlight the entered letter with green(matched) or red(unmatched). </li> 
+  
+  <li><p style="background-color: #235c0f; display:inline">Legal)</p> Have a full qwerty keyboard, but when the user is hovered over a tiny key, an enlarged version of the key will appear. Similar to the photo below. All keys will have this behavior equally. There could also be an audio "clicking" cue similar to iphone's keyboard's sound effect.
+  <img src="https://files.slack.com/files-pri/T039USHQRPZ-F03BY00C480/278080881_703835167697928_2143444902946391046_n.png?pub_secret=64ec112138" width="150" style="display:block;">
+  </li>
+  <li><p style="background-color: #235c0f; display:inline">Legal)</p> The same hover-to-enlarge idea as above, but a circular keyboard with letters alphabetically listed along the perimeter (similar to the photo below, but without the 3~4 letter grouping). Hover over a letter on the perimeter to enlarge it, swipe towards the center while it's hovered & enlarged to select it. 
+  <img src="https://files.slack.com/files-pri/T039USHQRPZ-F03ATK489P1/circular_keyboard.png?pub_secret=2047e3f787" style="display:block;width:15%;">
+  </li>
+  <li><p style="background-color: #6e2212; display:inline">Not Legal)</p> If the user has entered n letters, display the (n+1)th letter of the correct phrase on screen, regardless if the entered n letters are correct or not.</li>
+  <li><p style="background-color: #235c0f; display:inline">Legal)</p> A circular dial keyboard. "Turn" (ie click and drag) the dial clockwise to move forward in the alphabet, and vice versa. The currently selected letter is displayed at the center of the dial.</li>
 </ol>
 
 ## Prototype 1 Implementation

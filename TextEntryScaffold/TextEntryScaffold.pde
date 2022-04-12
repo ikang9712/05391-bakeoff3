@@ -21,6 +21,29 @@ PImage finger;
 //Variables for my silly implementation. You can delete this:
 char currentLetter = 'a';
 
+char[] firstRow = {'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'};
+char[] secondRow = {'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'};
+char[] thirdRow = {'z', 'x', 'c', 'v', 'b', 'n', 'm'};
+
+// offsets from the left ledge of the input area
+int firstOffset = 0;
+int secondOffset = 5;
+int thirdOffset = 18;
+int spaceOffset = 9;
+
+// from the center of the screen
+int firstY = -20;
+int secondY = 0;
+int thirdY = 20;
+int spaceY = 40;
+
+int keyWidth = 10;
+int keyHeight = 14;
+int spaceWidth = 100;
+int spaceHeight = keyHeight;
+
+int margin = 2;
+
 //You can modify anything in here. This is just a basic implementation.
 void setup()
 {
@@ -66,6 +89,43 @@ void draw()
   fill(100);
   rect(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2, sizeOfInputArea, sizeOfInputArea); //input area should be 1" by 1"
   
+  // draw qwerty keyboard
+  
+  pushMatrix();
+  translate(width/2+2, height/2);
+  int leftLedge = int(-sizeOfInputArea/2);
+  textAlign(LEFT, TOP); //https://processing.org/reference/textAlign_.html
+  textSize(keyHeight-2);
+  // first row
+  for(int i = 0; i<firstRow.length; i++) { // qwertyuiop
+    fill(255);
+    rect(leftLedge + firstOffset + keyWidth*i + margin*i, firstY, keyWidth, keyHeight, 2);
+    fill(0);
+    text(firstRow[i], leftLedge + firstOffset + keyWidth*i + margin*i+1, firstY-2);
+  }
+  
+  // second row
+  for(int i = 0; i<secondRow.length; i++) { // asdfghjkl
+    fill(255);
+    rect(leftLedge + secondOffset + keyWidth*i + margin*i, secondY, keyWidth, keyHeight, 2);
+    fill(0);
+    text(secondRow[i], leftLedge + secondOffset + keyWidth*i + margin*i+1, secondY-1);
+  }
+    
+  // third row
+  for(int i = 0; i<thirdRow.length; i++) { // zxcvbnm
+    fill(255);
+    rect(leftLedge + thirdOffset + keyWidth*i + margin*i, thirdY, keyWidth, keyHeight, 2);
+    fill(0);
+    text(thirdRow[i], leftLedge + thirdOffset + keyWidth*i + margin*i+1, thirdY-1);
+  }
+  
+  // big space bar
+  fill(255);
+  rect(leftLedge + spaceOffset, spaceY, spaceWidth, spaceHeight, 2);
+  fill(0);
+  text("space", leftLedge + spaceOffset + 35, spaceY);
+  popMatrix();
 
   if (startTime==0 & !mousePressed)
   {
@@ -88,26 +148,9 @@ void draw()
     fill(128);
     text("Target:   " + currentPhrase, 70, 100); //draw the target string
     text("Entered:  " + currentTyped +"|", 70, 140); //draw what the user has entered thus far 
-
-    //draw very basic next button
-    fill(255, 0, 0);
-    rect(600, 600, 200, 200); //draw next button
-    fill(255);
-    text("NEXT > ", 650, 650); //draw next label
-
-    //example design draw code
-    fill(255, 0, 0); //red button
-    rect(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2); //draw left red button
-    fill(0, 255, 0); //green button
-    rect(width/2-sizeOfInputArea/2+sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2); //draw right green button
-    textAlign(CENTER);
-    fill(200);
-    text("" + currentLetter, width/2, height/2-sizeOfInputArea/4); //draw current letter
   }
  
- 
-  //drawFinger(); //no longer needed as we'll be deploying to an actual touschreen device
-}
+ }
 
 //my terrible implementation you can entirely replace
 boolean didMouseClick(float x, float y, float w, float h) //simple function to do hit testing
@@ -118,29 +161,8 @@ boolean didMouseClick(float x, float y, float w, float h) //simple function to d
 //my terrible implementation you can entirely replace
 void mousePressed()
 {
-  if (didMouseClick(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2)) //check if click in left button
-  {
-    currentLetter --;
-    if (currentLetter<'_') //wrap around to z
-      currentLetter = 'z';
-  }
+  //currentTyped+=currentLetter;
 
-  if (didMouseClick(width/2-sizeOfInputArea/2+sizeOfInputArea/2, height/2-sizeOfInputArea/2+sizeOfInputArea/2, sizeOfInputArea/2, sizeOfInputArea/2)) //check if click in right button
-  {
-    currentLetter ++;
-    if (currentLetter>'z') //wrap back to space (aka underscore)
-      currentLetter = '_';
-  }
-
-  if (didMouseClick(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2, sizeOfInputArea, sizeOfInputArea/2)) //check if click occured in letter area
-  {
-    if (currentLetter=='_') //if underscore, consider that a space bar
-      currentTyped+=" ";
-    else if (currentLetter=='`' & currentTyped.length()>0) //if `, treat that as a delete command
-      currentTyped = currentTyped.substring(0, currentTyped.length()-1);
-    else if (currentLetter!='`') //if not any of the above cases, add the current letter to the typed string
-      currentTyped+=currentLetter;
-  }
 
   //You are allowed to have a next button outside the 1" area
   if (didMouseClick(600, 600, 200, 200)) //check if click is in next button

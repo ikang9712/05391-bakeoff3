@@ -66,6 +66,34 @@ void draw()
   fill(100);
   rect(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2, sizeOfInputArea, sizeOfInputArea); //input area should be 1" by 1"
   
+  // Draw the circular keyboard
+  pushMatrix();
+  translate(width/2+2, height/2); // the "+2" offsets it a little bit
+  
+  // the base circle
+  fill(255);
+  circle(0, 0, sizeOfInputArea); 
+  
+  fill(255, 0, 0);
+  circle(0, 0, 4);
+  
+  // letters around the perimeter
+  fill(0);
+  int fontSize = 10;
+  textSize(fontSize);
+  float radSpacing = radians((370/25));
+  PVector v1 = PVector.fromAngle(radians(-90)); // start at top of the clock
+  v1.setMag(sizeOfInputArea/2-fontSize/2); // radius of cricle - leave font space
+
+  for(int letter = 97; letter <= 122; letter++) { // ascii
+    text(char(letter), v1.x, v1.y+2); // "+2" offsets it a little bit
+    v1.rotate(radSpacing);
+
+  }
+  
+  popMatrix();
+  
+
 
   if (startTime==0 & !mousePressed)
   {

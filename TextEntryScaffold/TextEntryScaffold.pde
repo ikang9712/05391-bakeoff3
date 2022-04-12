@@ -111,18 +111,16 @@ void draw()
     text(currentLetter, 0-1, 0+8);
   }
   popMatrix();
+  textSize(20); // reset the text size 
     
-  //// draw an arrow/line pointing towards the perimeter's letter
-  //stroke(150);
-  //line(width/2, height/2, mouseX, mouseY);
-  
-
-
   if (startTime==0 & !mousePressed)
   {
     fill(128);
     textAlign(CENTER);
     text("Click to start time!", 280, 150); //display this messsage until the user clicks!
+    text("Click grey corner for [space]. ", 280, 180); 
+    text("Mouse click while a letter is enlarged to submit the selected letter.", 300, 210);
+
   }
 
   if (startTime==0 & mousePressed)

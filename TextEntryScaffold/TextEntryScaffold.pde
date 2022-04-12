@@ -20,6 +20,9 @@ PImage finger;
 
 //Variables for my silly implementation. You can delete this:
 char currentLetter = 'a';
+boolean letterSelected = false;
+int currCenterX = 0;
+int currCenterY = 0; 
 
 char[] firstRow = {'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'};
 char[] secondRow = {'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'};
@@ -42,7 +45,15 @@ int keyHeight = 14;
 int spaceWidth = 100;
 int spaceHeight = keyHeight;
 
+int firstSecondGutter = secondY - firstY - keyHeight;
+int secondThirdGutter = thirdY - secondY - keyHeight;
+int thirdSpaceGutter = spaceY - thirdY - spaceHeight;
 int margin = 2;
+
+// for the enlargement pop up
+int popWidth = 30;
+int popHeight = 36;
+int popYOffset = 28;
 
 //You can modify anything in here. This is just a basic implementation.
 void setup()
@@ -125,7 +136,30 @@ void draw()
   rect(leftLedge + spaceOffset, spaceY, spaceWidth, spaceHeight, 2);
   fill(0);
   text("space", leftLedge + spaceOffset + 35, spaceY);
+  
+  
+  // draw the enlarged selected character
+  if(letterSelected){ 
+    
+    // draw the pop up box
+    fill(50);
+    int popX = currCenterX - popWidth/2;
+    int popY = currCenterY - popHeight/2 - popYOffset;
+    if(popX < leftLedge) { popX = leftLedge; } // move it back in the watch area
+    if(popX + popWidth > leftLedge + sizeOfInputArea) { popX = int(leftLedge + sizeOfInputArea - popWidth); }
+    rect(popX, popY, popWidth, popHeight, 6);
+    
+    // little triangle beneath the pop up box
+    triangle(popX+5, popY+popHeight, popX+popWidth-5, popY+popHeight, currCenterX, currCenterY);
+    
+    // draw the enlarged letter
+    textSize(30);
+    fill(255);
+    text(currentLetter, popX+7, popY);
+  }
+  
   popMatrix();
+  textSize(20); // reset text size
 
   if (startTime==0 & !mousePressed)
   {
@@ -141,6 +175,12 @@ void draw()
 
   if (startTime!=0)
   {
+    //draw very basic next button
+    fill(255, 0, 0);
+    rect(600, 600, 200, 200); //draw next button
+    fill(255);
+    text("NEXT > ", 650, 650); //draw next label
+    
     //feel free to change the size and position of the target/entered phrases and next button 
     textAlign(LEFT); //align the text left
     fill(128);
@@ -158,11 +198,88 @@ boolean didMouseClick(float x, float y, float w, float h) //simple function to d
   return (mouseX > x && mouseX<x+w && mouseY>y && mouseY<y+h); //check to see if it is in button bounds
 }
 
+boolean didMouseHoverMatrix(float x, float y, float w, float h) //simple function to do hit testing
+{
+  x += width/2+2;
+  y += height/2+2;
+  return (mouseX > x && mouseX<x+w && mouseY>y && mouseY<y+h); //check to see if it is in button bounds
+}
+
+void mouseMoved() {
+  pushMatrix();
+  translate(width/2+2, height/2);
+  
+  int leftLedge = int(-sizeOfInputArea/2);
+
+  // check if the mouse clicked on something in the first row
+  for(int i = 0; i<firstRow.length; i++) { // qwertyuiop
+    if(didMouseHoverMatrix(leftLedge + firstOffset + keyWidth*i + margin*i - margin/2, 
+                     firstY-firstSecondGutter/2, 
+                     keyWidth+margin, 
+                     keyHeight+firstSecondGutter)) {
+      currentLetter = firstRow[i];
+      letterSelected = true;
+      currCenterX = leftLedge + firstOffset + keyWidth*i + margin*i + keyWidth/2;
+      currCenterY = firstY + keyHeight/2;
+      print(currentLetter);
+      popMatrix();
+      return;
+    }
+  }
+  
+  // check if the mouse clicked on something in the second row
+  for(int i = 0; i<secondRow.length; i++) { // asdfghjkl
+    if(didMouseHoverMatrix(leftLedge + secondOffset + keyWidth*i + margin*i - margin/2, 
+                     secondY-secondThirdGutter/2, 
+                     keyWidth+margin, 
+                     keyHeight+secondThirdGutter)) {
+      currentLetter = secondRow[i];
+      letterSelected = true;
+      currCenterX = leftLedge + secondOffset + keyWidth*i + margin*i + keyWidth/2;
+      currCenterY = secondY + keyHeight/2;
+      print(currentLetter);
+      popMatrix();
+      return;
+    }
+  }
+  
+  // check if the mouse clicked on something in the third row
+  for(int i = 0; i<thirdRow.length; i++) { // zxcvbnm
+    if(didMouseHoverMatrix(leftLedge + thirdOffset + keyWidth*i + margin*i - margin/2, 
+                     thirdY-thirdSpaceGutter/2, 
+                     keyWidth+margin, 
+                     keyHeight+thirdSpaceGutter)) {
+      currentLetter = thirdRow[i];
+      letterSelected = true;
+      currCenterX = leftLedge + thirdOffset + keyWidth*i + margin*i + keyWidth/2;
+      currCenterY = thirdY + keyHeight/2;
+      print(currentLetter);
+      popMatrix();
+      return;
+    }
+  }
+  // big space bar
+  if(didMouseHoverMatrix(leftLedge, spaceY, sizeOfInputArea, spaceHeight)) {
+    currentLetter = ' ';
+    letterSelected = true;
+    currCenterX = 0;
+    currCenterY = spaceY + spaceHeight/2;
+    print("[space]");
+    popMatrix();
+    return;
+  }
+  
+  // didn't recognize any keys being hit
+  letterSelected = false;
+  popMatrix();
+}
+
 //my terrible implementation you can entirely replace
 void mousePressed()
 {
-  //currentTyped+=currentLetter;
-
+  if(letterSelected){
+    currentTyped+=currentLetter;
+  }
 
   //You are allowed to have a next button outside the 1" area
   if (didMouseClick(600, 600, 200, 200)) //check if click is in next button

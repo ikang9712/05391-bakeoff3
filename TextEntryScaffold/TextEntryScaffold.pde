@@ -13,7 +13,7 @@ float lettersExpectedTotal = 0; //a running total of the number of letters expec
 float errorsTotal = 0; //a running total of the number of errors (when hitting next)
 String currentPhrase = ""; //the current target phrase
 String currentTyped = ""; //what the user has typed so far
-final int DPIofYourDeviceScreen = 120; //you will need to look up the DPI or PPI of your device to make sure you get the right scale. Or play around with this value.
+final int DPIofYourDeviceScreen = 550; //you will need to look up the DPI or PPI of your device to make sure you get the right scale. Or play around with this value.
 final float sizeOfInputArea = DPIofYourDeviceScreen*1; //aka, 1.0 inches square!
 PImage watch;
 PImage finger;
@@ -177,7 +177,7 @@ void mouseMoved(){
   
   // Make sure the mouse is on the circular keyboard
   if(sqrt(sq(mouseX-width/2) + sq(mouseY-height/2)) <= sizeOfInputArea/2 + 1){ // "+1" offset, give a little bit of buffer
-    cursor(HAND);
+    //cursor(HAND);
     PVector currVec = new PVector(mouseX - width/2, mouseY - width/2);
     currDegree = degrees(currVec.heading()) + 90; // "+90" so that top of the clock is 0
     if(currDegree < 0) {
@@ -192,7 +192,7 @@ void mouseMoved(){
     print(currDegree + " --> " + letter + " | " + char(letter) + "\n");
     
   } else {
-    cursor(ARROW);
+    //cursor(ARROW);
     letterSelected = false;
   }
   

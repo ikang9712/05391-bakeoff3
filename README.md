@@ -50,7 +50,27 @@
 </ol>
 
 ## Prototype 1 Implementation
+- Features
+  - circle-keyboard (Idea 7)
+  - Android Deployment
+- Refinement
+  - Alternative implementation of keyboard: qwerty-keyboard (Idea 6)
+  - Rendering issues with Android deployment 
 
 ## Prototype 2 Implementation
+- Features
+  - qwerty-keyboard (Idea 6)
+  - (continued.) Android Deployment
+- Refinement
+  - User testing for choosing better UI between Idea 6 and Idea 7.
+  - UI suggestion for next button
+  - implementation of the new function, removing the most recent letter of the entered phrase.
+
 
 ## Prototype 3 Implementation (Final)
+- Features
+  - better next button UI
+  - remove function 
+  - + optional) UI/UX enhancement for qwerty keyboard
+- Rationale
+  - tbd

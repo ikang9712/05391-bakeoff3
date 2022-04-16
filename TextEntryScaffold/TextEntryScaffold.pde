@@ -21,6 +21,7 @@ PImage finger;
 //Variables for my silly implementation. You can delete this:
 char currentLetter = 'a';
 boolean letterSelected = false;
+boolean removeSelected = false;
 int currCenterX = 0;
 int currCenterY = 0; 
 
@@ -272,6 +273,16 @@ void mouseMoved() {
     return;
   }
   
+  // big remove bar
+  if(didMouseHoverMatrix(leftLedge, spaceY-thirdSpaceGutter, sizeOfInputArea, spaceHeight+thirdSpaceGutter)) {
+    currentLetter = ' ';
+    letterSelected = false;
+    removeSelected = true;
+    currCenterX = 0;
+    currCenterY = spaceY + spaceHeight/2;
+    popMatrix();
+    return;
+  }
   // didn't recognize any keys being hit
   letterSelected = false;
   popMatrix();
@@ -282,6 +293,10 @@ void mousePressed()
 {
   if(letterSelected){
     currentTyped+=currentLetter;
+  }
+  if (removeSelected){
+    
+    currentTyped = currentTyped.substring(0,currentTyped.length()-1); 
   }
 
   //You are allowed to have a next button outside the 1" area

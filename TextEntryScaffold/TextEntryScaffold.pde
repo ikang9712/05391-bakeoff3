@@ -78,7 +78,7 @@ void setup()
  
   orientation(PORTRAIT); //can also be PORTRAIT - sets orientation on android device
   size(1080, 2220); //Sets the size of the app. You should modify this to your device's native size. Many phones today are 1080 wide by 1920 tall.
-  //size(800, 800);
+  // size(800, 800);
   textFont(createFont("Arial", int(DPIofYourDeviceScreen/6))); //set the font to arial 24. Creating fonts is expensive, so make difference sizes once in setup, not draw
   //^ originally 20
   noStroke(); //my code doesn't use any strokes
@@ -151,14 +151,19 @@ void draw()
   text("space", leftLedge + spaceOffset + int(DPIofYourDeviceScreen/3.4285714), spaceY); // originally +35
   
   // big remove bar
-  fill(255);
-  rect(leftLedge + spaceOffset, spaceY-int(DPIofYourDeviceScreen/1.3333333), spaceWidth, spaceHeight, int(DPIofYourDeviceScreen/60));
+  if(letterSelected && currentLetter == '<') {
+    fill(255, 0, 0, 255);
+  } else {
+    fill(255, 0, 0, 100);
+  }
+  
+  rect(leftLedge,0-sizeOfInputArea/2, sizeOfInputArea, sizeOfInputArea/2 + firstY -int(DPIofYourDeviceScreen/20), int(DPIofYourDeviceScreen/60));
   fill(0);
   text("remove", leftLedge + spaceOffset + int(DPIofYourDeviceScreen/3.4285714), spaceY-int(DPIofYourDeviceScreen/1.3333333)); // 
 
   
   // draw the enlarged selected character
-  if(letterSelected){ 
+  if(letterSelected && currentLetter != '<'){ 
     
     // draw the pop up box
     fill(50);
@@ -196,11 +201,11 @@ void draw()
   if (startTime!=0)
   {
     //draw very basic next button
-    fill(255, 0, 0);
+    fill(0, 255, 0);
    
-    rect(width/2+xOffset+sizeOfInputArea/2+int(DPIofYourDeviceScreen/15), height/2-sizeOfInputArea/2, int(DPIofYourDeviceScreen*1), sizeOfInputArea); //draw next button
+    rect(width/2+xOffset-sizeOfInputArea/2, height/2+sizeOfInputArea/2+int(DPIofYourDeviceScreen/5), sizeOfInputArea, sizeOfInputArea); //draw next button
     fill(255);
-    text("NEXT > ", width/2+xOffset+sizeOfInputArea/2+int(DPIofYourDeviceScreen/10), height/2); //draw next label
+    text("NEXT > ", width/2+xOffset-sizeOfInputArea/2+int(DPIofYourDeviceScreen/4), height/2+sizeOfInputArea/2+int(DPIofYourDeviceScreen/5)); //draw next label
     
     //feel free to change the size and position of the target/entered phrases and next button 
     textAlign(LEFT); //align the text left
@@ -287,7 +292,7 @@ void mouseDragged() {
   }
   
   // big remove bar
-   if(didMouseHoverMatrix(leftLedge, spaceY-int(DPIofYourDeviceScreen/1.3333333),spaceWidth, spaceHeight)) {
+   if(didMouseHoverMatrix(leftLedge, 0-sizeOfInputArea/2, sizeOfInputArea, sizeOfInputArea/2 - firstY)) {
     currentLetter = '<';
     letterSelected = true;
     //removeSelected = true;
@@ -319,9 +324,9 @@ void mouseReleased(){
 void mousePressed()
 {
   mouseDragged();
-  
+
   //You are allowed to have a next button outside the 1" area
-  if (didMouseClick(width/2+xOffset+sizeOfInputArea/2+int(DPIofYourDeviceScreen/15), height/2-sizeOfInputArea/2, int(DPIofYourDeviceScreen*1) , sizeOfInputArea)) //check if click is in next button
+  if (didMouseClick(width/2+xOffset-sizeOfInputArea/2, height/2+sizeOfInputArea/2+int(DPIofYourDeviceScreen/5), sizeOfInputArea, sizeOfInputArea)) //check if click is in next button
   {
     nextTrial(); //if so, advance to next trial
   }

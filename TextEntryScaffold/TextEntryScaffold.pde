@@ -13,8 +13,14 @@ float lettersExpectedTotal = 0; //a running total of the number of letters expec
 float errorsTotal = 0; //a running total of the number of errors (when hitting next)
 String currentPhrase = ""; //the current target phrase
 String currentTyped = ""; //what the user has typed so far
- final int DPIofYourDeviceScreen = 120; //you will need to look up the DPI or PPI of your device to make sure you get the right scale. Or play around with this value.
-//final int DPIofYourDeviceScreen = 411; // Galaxy S9 plus, power saving mode
+
+// ANDROID DEV
+final int DPIofYourDeviceScreen = 411; //you will need to look up the DPI or PPI of your device to make sure you get the right scale. Or play around with this value.
+
+// PC DEV
+//final int DPIofYourDeviceScreen = 120; 
+
+
 final float sizeOfInputArea = DPIofYourDeviceScreen*1; //aka, 1.0 inches square!
 PImage watch;
 PImage finger;
@@ -38,10 +44,10 @@ int thirdOffset = int(DPIofYourDeviceScreen/6.6666666); // originally 18
 int spaceOffset = int(DPIofYourDeviceScreen/12); // originally 10
 
 // from the center of the screen
-int firstY = int(DPIofYourDeviceScreen/-6); // originally -20
-int secondY = 0; // originally 0
-int thirdY = int(DPIofYourDeviceScreen/6); // originally 20
-int spaceY = int(DPIofYourDeviceScreen/3); // originally 40
+int firstY = int(DPIofYourDeviceScreen/-17.142857); // originally -7
+int secondY = int(DPIofYourDeviceScreen/12); // originally 10
+int thirdY = int(DPIofYourDeviceScreen/4.444444); // originally 27
+int spaceY = int(DPIofYourDeviceScreen/2.666667); // originally 45
 
 int keyWidth = int(DPIofYourDeviceScreen/12); // originally 10, from 120/12
 int keyHeight = int(DPIofYourDeviceScreen/8.5714); // originally 14, 120/8.5714
@@ -56,7 +62,7 @@ int margin = DPIofYourDeviceScreen/60; // originally 2, from 120/60
 // for the enlargement pop up
 int popWidth = int(DPIofYourDeviceScreen/4); // originally 30
 int popHeight = int(DPIofYourDeviceScreen/3.333333); // originally 36
-int popYOffset = int(DPIofYourDeviceScreen/4.285714); // originally 28
+int popYOffset = int(DPIofYourDeviceScreen/2.6666666); // originally 45
 
 int xOffset = int(DPIofYourDeviceScreen/120); // originally 1
 
@@ -71,9 +77,10 @@ void setup()
   //Collections.shuffle(Arrays.asList(phrases), new Random(100)); //randomize the order of the phrases with seed 100; same order every time, useful for testing
  
   orientation(PORTRAIT); //can also be PORTRAIT - sets orientation on android device
-  //size(1080, 2220); //Sets the size of the app. You should modify this to your device's native size. Many phones today are 1080 wide by 1920 tall.
-  size(800, 800);
-  textFont(createFont("Arial", 20)); //set the font to arial 24. Creating fonts is expensive, so make difference sizes once in setup, not draw
+  size(1080, 2220); //Sets the size of the app. You should modify this to your device's native size. Many phones today are 1080 wide by 1920 tall.
+  //size(800, 800);
+  textFont(createFont("Arial", int(DPIofYourDeviceScreen/6))); //set the font to arial 24. Creating fonts is expensive, so make difference sizes once in setup, not draw
+  //^ originally 20
   noStroke(); //my code doesn't use any strokes
 }
 
@@ -112,34 +119,34 @@ void draw()
   translate(width/2+xOffset, height/2);
   int leftLedge = int(-sizeOfInputArea/2);
   textAlign(LEFT, TOP); //https://processing.org/reference/textAlign_.html
-  textSize(keyHeight-2);
+  textSize(keyHeight-int(DPIofYourDeviceScreen/60)); // originally -2
   // first row
   for(int i = 0; i<firstRow.length; i++) { // qwertyuiop
     fill(255);
-    rect(leftLedge + firstOffset + keyWidth*i + margin*i, firstY, keyWidth, keyHeight, 2);
+    rect(leftLedge + firstOffset + keyWidth*i + margin*i, firstY, keyWidth, keyHeight, int(DPIofYourDeviceScreen/60)); // corner radius orig 2
     fill(0);
-    text(firstRow[i], leftLedge + firstOffset + keyWidth*i + margin*i+1, firstY-2);
+    text(firstRow[i], leftLedge + firstOffset + keyWidth*i + margin*i+int(DPIofYourDeviceScreen/120), firstY); // 
   }
   
   // second row
   for(int i = 0; i<secondRow.length; i++) { // asdfghjkl
     fill(255);
-    rect(leftLedge + secondOffset + keyWidth*i + margin*i, secondY, keyWidth, keyHeight, 2);
+    rect(leftLedge + secondOffset + keyWidth*i + margin*i, secondY, keyWidth, keyHeight, int(DPIofYourDeviceScreen/60)); 
     fill(0);
-    text(secondRow[i], leftLedge + secondOffset + keyWidth*i + margin*i+1, secondY-1);
+    text(secondRow[i], leftLedge + secondOffset + keyWidth*i + margin*i+ int(DPIofYourDeviceScreen/120), secondY);
   }
     
   // third row
   for(int i = 0; i<thirdRow.length; i++) { // zxcvbnm
     fill(255);
-    rect(leftLedge + thirdOffset + keyWidth*i + margin*i, thirdY, keyWidth, keyHeight, 2);
+    rect(leftLedge + thirdOffset + keyWidth*i + margin*i, thirdY, keyWidth, keyHeight, int(DPIofYourDeviceScreen/60));
     fill(0);
-    text(thirdRow[i], leftLedge + thirdOffset + keyWidth*i + margin*i+1, thirdY-1);
+    text(thirdRow[i], leftLedge + thirdOffset + keyWidth*i + margin*i+ int(DPIofYourDeviceScreen/120), thirdY); // originally thirdY-1
   }
   
   // big space bar
   fill(255);
-  rect(leftLedge + spaceOffset, spaceY, spaceWidth, spaceHeight, 2);
+  rect(leftLedge + spaceOffset, spaceY, spaceWidth, spaceHeight, int(DPIofYourDeviceScreen/60));
   fill(0);
   text("space", leftLedge + spaceOffset + int(DPIofYourDeviceScreen/3.4285714), spaceY); // originally +35
   
@@ -152,8 +159,9 @@ void draw()
     int popX = currCenterX - popWidth/2;
     int popY = currCenterY - popHeight/2 - popYOffset;
     if(popX < leftLedge) { popX = leftLedge; } // move it back in the watch area
+    if(popY < 0-sizeOfInputArea/2) { popY = int(0-sizeOfInputArea/2); } // move it back in the watch area
     if(popX + popWidth > leftLedge + sizeOfInputArea) { popX = int(leftLedge + sizeOfInputArea - popWidth); }
-    rect(popX, popY, popWidth, popHeight, 6);
+    rect(popX, popY, popWidth, popHeight,  int(DPIofYourDeviceScreen/20)); // originally corner radius = 6
     
     // little triangle beneath the pop up box
     triangle(popX+int(DPIofYourDeviceScreen/24), popY+popHeight, popX+popWidth-int(DPIofYourDeviceScreen/24), popY+popHeight, currCenterX, currCenterY); // originally + 5
@@ -165,7 +173,7 @@ void draw()
   }
   
   popMatrix();
-  textSize(20); // reset text size
+  textSize(int(DPIofYourDeviceScreen/6)); // reset text size // originally 20
 
   if (startTime==0 & !mousePressed)
   {
@@ -183,9 +191,10 @@ void draw()
   {
     //draw very basic next button
     fill(255, 0, 0);
-    rect(600, 600, 200, 200); //draw next button
+   
+    rect(width/2+xOffset+sizeOfInputArea/2+int(DPIofYourDeviceScreen/15), height/2-sizeOfInputArea/2, int(DPIofYourDeviceScreen*1), sizeOfInputArea); //draw next button
     fill(255);
-    text("NEXT > ", 650, 650); //draw next label
+    text("NEXT > ", width/2+xOffset+sizeOfInputArea/2+int(DPIofYourDeviceScreen/10), height/2); //draw next label
     
     //feel free to change the size and position of the target/entered phrases and next button 
     textAlign(LEFT); //align the text left
@@ -206,8 +215,8 @@ boolean didMouseClick(float x, float y, float w, float h) //simple function to d
 
 boolean didMouseHoverMatrix(float x, float y, float w, float h) //simple function to do hit testing
 {
-  x += width/2+2;
-  y += height/2+2;
+  x += width/2+xOffset;
+  y += height/2;
   return (mouseX >= x && mouseX<=x+w && mouseY>=y && mouseY<=y+h); //check to see if it is in button bounds
 }
 
@@ -276,15 +285,20 @@ void mouseDragged() {
   popMatrix();
 }
 
+void mouseReleased(){
+  if(letterSelected){
+    currentTyped+=currentLetter;
+    letterSelected = false;
+  }
+}
+
 //my terrible implementation you can entirely replace
 void mousePressed()
 {
-  if(letterSelected){
-    currentTyped+=currentLetter;
-  }
-
+  mouseDragged();
+  
   //You are allowed to have a next button outside the 1" area
-  if (didMouseClick(600, 600, 200, 200)) //check if click is in next button
+  if (didMouseClick(width/2+xOffset+sizeOfInputArea/2+int(DPIofYourDeviceScreen/15), height/2-sizeOfInputArea/2, int(DPIofYourDeviceScreen*1) , sizeOfInputArea)) //check if click is in next button
   {
     nextTrial(); //if so, advance to next trial
   }

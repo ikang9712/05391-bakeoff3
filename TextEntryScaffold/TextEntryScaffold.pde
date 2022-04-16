@@ -18,7 +18,7 @@ String currentTyped = ""; //what the user has typed so far
 final int DPIofYourDeviceScreen = 411; //you will need to look up the DPI or PPI of your device to make sure you get the right scale. Or play around with this value.
 
 // PC DEV
-//final int DPIofYourDeviceScreen = 120; 
+// final int DPIofYourDeviceScreen = 120; 
 
 
 final float sizeOfInputArea = DPIofYourDeviceScreen*1; //aka, 1.0 inches square!
@@ -79,7 +79,7 @@ void setup()
   orientation(PORTRAIT); //can also be PORTRAIT - sets orientation on android device
   size(1080, 2220); //Sets the size of the app. You should modify this to your device's native size. Many phones today are 1080 wide by 1920 tall.
   // size(800, 800);
-  textFont(createFont("Arial", int(DPIofYourDeviceScreen/6))); //set the font to arial 24. Creating fonts is expensive, so make difference sizes once in setup, not draw
+  textFont(createFont("Arial", int(DPIofYourDeviceScreen/10))); //set the font to arial 24. Creating fonts is expensive, so make difference sizes once in setup, not draw
   //^ originally 20
   noStroke(); //my code doesn't use any strokes
 }
@@ -94,18 +94,18 @@ void draw()
   {
     fill(0);
     textAlign(CENTER);
-    text("Trials complete!",400,200); //output
-    text("Total time taken: " + (finishTime - startTime),400,220); //output
-    text("Total letters entered: " + lettersEnteredTotal,400,240); //output
-    text("Total letters expected: " + lettersExpectedTotal,400,260); //output
-    text("Total errors entered: " + errorsTotal,400,280); //output
+    text("Trials complete!", width/2,int(DPIofYourDeviceScreen/0.6)); //output
+    text("Total time taken: " + (finishTime - startTime),width/2,int(DPIofYourDeviceScreen/0.6)+int(DPIofYourDeviceScreen/6)*1); //output
+    text("Total letters entered: " + lettersEnteredTotal,width/2,int(DPIofYourDeviceScreen/0.6)+int(DPIofYourDeviceScreen/6)*2); //output
+    text("Total letters expected: " + lettersExpectedTotal,width/2,int(DPIofYourDeviceScreen/0.6)+int(DPIofYourDeviceScreen/6)*3); //output
+    text("Total errors entered: " + errorsTotal,width/2,int(DPIofYourDeviceScreen/0.6)+int(DPIofYourDeviceScreen/6)*4); //output
     float wpm = (lettersEnteredTotal/5.0f)/((finishTime - startTime)/60000f); //FYI - 60K is number of milliseconds in minute
-    text("Raw WPM: " + wpm,400,300); //output
+    text("Raw WPM: " + wpm,width/2,int(DPIofYourDeviceScreen/0.6)+int(DPIofYourDeviceScreen/6)*5); //output
     float freebieErrors = lettersExpectedTotal*.05; //no penalty if errors are under 5% of chars
-    text("Freebie errors: " + nf(freebieErrors,1,3),400,320); //output
+    text("Freebie errors: " + nf(freebieErrors,1,3),width/2,int(DPIofYourDeviceScreen/0.6)+int(DPIofYourDeviceScreen/6)*6); //output
     float penalty = max(errorsTotal-freebieErrors, 0) * .5f;
-    text("Penalty: " + penalty,400,340);
-    text("WPM w/ penalty: " + (wpm-penalty),400,360); //yes, minus, because higher WPM is better
+    text("Penalty: " + penalty,width/2,int(DPIofYourDeviceScreen/0.6)+int(DPIofYourDeviceScreen/6)*7);
+    text("WPM w/ penalty: " + (wpm-penalty),width/2, int(DPIofYourDeviceScreen/0.6)+int(DPIofYourDeviceScreen/6)*8); //yes, minus, because higher WPM is better
     return;
   }
   
@@ -184,13 +184,13 @@ void draw()
   }
   
   popMatrix();
-  textSize(int(DPIofYourDeviceScreen/6)); // reset text size // originally 20
+  textSize(int(DPIofYourDeviceScreen/10)); // reset text size 
 
   if (startTime==0 & !mousePressed)
   {
     fill(128);
-    textAlign(CENTER);
-    text("Click to start time!", 280, 150); //display this messsage until the user clicks!
+    textAlign(LEFT);
+    text("Click to start time!", width/20, height/4); //display this messsage until the user clicks!
   }
 
   if (startTime==0 & mousePressed)
@@ -203,17 +203,17 @@ void draw()
     //draw very basic next button
     fill(0, 255, 0);
    
-    rect(width/2+xOffset-sizeOfInputArea/2, height/2+sizeOfInputArea/2+int(DPIofYourDeviceScreen/5), sizeOfInputArea, sizeOfInputArea); //draw next button
+    rect(width/2+xOffset-sizeOfInputArea/2, height/2+sizeOfInputArea/2+int(DPIofYourDeviceScreen/2), sizeOfInputArea, sizeOfInputArea); //draw next button
     fill(255);
-    text("NEXT > ", width/2+xOffset-sizeOfInputArea/2+int(DPIofYourDeviceScreen/4), height/2+sizeOfInputArea/2+int(DPIofYourDeviceScreen/5)); //draw next label
+    text("NEXT > ", width/2+xOffset-sizeOfInputArea/2+int(DPIofYourDeviceScreen/4), height/2+sizeOfInputArea/2+int(DPIofYourDeviceScreen/1.2)); //draw next label
     
     //feel free to change the size and position of the target/entered phrases and next button 
     textAlign(LEFT); //align the text left
     fill(128);
-    text("Phrase " + (currTrialNum+1) + " of " + totalTrialNum, 70, 50); //draw the trial count
+    text("Phrase " + (currTrialNum+1) + " of " + totalTrialNum, width/20, height/4); //draw the trial count
     fill(128);
-    text("Target:   " + currentPhrase, 70, 100); //draw the target string
-    text("Entered:  " + currentTyped +"|", 70, 140); //draw what the user has entered thus far 
+    text("Target:   " + currentPhrase, width/20, height/4+int(DPIofYourDeviceScreen/7.5)); //draw the target string
+    text("Entered:  " + currentTyped +"|", width/20, height/4+int(DPIofYourDeviceScreen/7.5)*2); //draw what the user has entered thus far 
   }
  
  }
@@ -326,7 +326,7 @@ void mousePressed()
   mouseDragged();
 
   //You are allowed to have a next button outside the 1" area
-  if (didMouseClick(width/2+xOffset-sizeOfInputArea/2, height/2+sizeOfInputArea/2+int(DPIofYourDeviceScreen/5), sizeOfInputArea, sizeOfInputArea)) //check if click is in next button
+  if (didMouseClick(width/2+xOffset-sizeOfInputArea/2, height/2+sizeOfInputArea/2+int(DPIofYourDeviceScreen/2), sizeOfInputArea, sizeOfInputArea)) //check if click is in next button
   {
     nextTrial(); //if so, advance to next trial
   }

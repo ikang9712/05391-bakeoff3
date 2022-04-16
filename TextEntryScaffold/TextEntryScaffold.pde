@@ -54,9 +54,9 @@ int thirdSpaceGutter = spaceY - thirdY - spaceHeight;
 int margin = DPIofYourDeviceScreen/60; // originally 2, from 120/60
 
 // for the enlargement pop up
-int popWidth = int(30*scalingFactor);
-int popHeight = int(36*scalingFactor);
-int popYOffset = int(28*scalingFactor);
+int popWidth = int(DPIofYourDeviceScreen/4); // originally 30
+int popHeight = int(DPIofYourDeviceScreen/3.333333); // originally 36
+int popYOffset = int(DPIofYourDeviceScreen/4.285714); // originally 28
 
 int xOffset = int(DPIofYourDeviceScreen/120); // originally 1
 
@@ -156,12 +156,12 @@ void draw()
     rect(popX, popY, popWidth, popHeight, 6);
     
     // little triangle beneath the pop up box
-    triangle(popX+5, popY+popHeight, popX+popWidth-5, popY+popHeight, currCenterX, currCenterY);
+    triangle(popX+int(DPIofYourDeviceScreen/24), popY+popHeight, popX+popWidth-int(DPIofYourDeviceScreen/24), popY+popHeight, currCenterX, currCenterY); // originally + 5
     
     // draw the enlarged letter
-    textSize(30);
+    textSize(int(DPIofYourDeviceScreen/4)); // originally 30
     fill(255);
-    text(currentLetter, popX+7, popY);
+    text(currentLetter, popX+int(DPIofYourDeviceScreen/15), popY); // originally + 8
   }
   
   popMatrix();
@@ -211,7 +211,7 @@ boolean didMouseHoverMatrix(float x, float y, float w, float h) //simple functio
   return (mouseX >= x && mouseX<=x+w && mouseY>=y && mouseY<=y+h); //check to see if it is in button bounds
 }
 
-void mouseMoved() {
+void mouseDragged() {
   pushMatrix();
   translate(width/2 + xOffset, height/2);
   

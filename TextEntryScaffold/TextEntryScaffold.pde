@@ -13,8 +13,8 @@ float lettersExpectedTotal = 0; //a running total of the number of letters expec
 float errorsTotal = 0; //a running total of the number of errors (when hitting next)
 String currentPhrase = ""; //the current target phrase
 String currentTyped = ""; //what the user has typed so far
-// final int DPIofYourDeviceScreen = 120; //you will need to look up the DPI or PPI of your device to make sure you get the right scale. Or play around with this value.
-final int DPIofYourDeviceScreen = 550; // Galaxy S10
+ final int DPIofYourDeviceScreen = 120; //you will need to look up the DPI or PPI of your device to make sure you get the right scale. Or play around with this value.
+//final int DPIofYourDeviceScreen = 411; // Galaxy S9 plus, power saving mode
 final float sizeOfInputArea = DPIofYourDeviceScreen*1; //aka, 1.0 inches square!
 PImage watch;
 PImage finger;
@@ -25,36 +25,40 @@ boolean letterSelected = false;
 int currCenterX = 0;
 int currCenterY = 0; 
 
+float scalingFactor = DPIofYourDeviceScreen/120; // 120 = original dpi during pc development
+
 char[] firstRow = {'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'};
 char[] secondRow = {'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'};
 char[] thirdRow = {'z', 'x', 'c', 'v', 'b', 'n', 'm'};
 
 // offsets from the left ledge of the input area
-int firstOffset = 0;
-int secondOffset = 5;
-int thirdOffset = 18;
-int spaceOffset = 9;
+int firstOffset = int(DPIofYourDeviceScreen/120); // originally 1
+int secondOffset = int(DPIofYourDeviceScreen/20); // originally 6
+int thirdOffset = int(DPIofYourDeviceScreen/6.6666666); // originally 18
+int spaceOffset = int(DPIofYourDeviceScreen/12); // originally 10
 
 // from the center of the screen
-int firstY = -20;
-int secondY = 0;
-int thirdY = 20;
-int spaceY = 40;
+int firstY = int(DPIofYourDeviceScreen/-6); // originally -20
+int secondY = 0; // originally 0
+int thirdY = int(DPIofYourDeviceScreen/6); // originally 20
+int spaceY = int(DPIofYourDeviceScreen/3); // originally 40
 
-int keyWidth = 10;
-int keyHeight = 14;
-int spaceWidth = 100;
+int keyWidth = int(DPIofYourDeviceScreen/12); // originally 10, from 120/12
+int keyHeight = int(DPIofYourDeviceScreen/8.5714); // originally 14, 120/8.5714
+int spaceWidth = int(DPIofYourDeviceScreen/1.2); // originally 100
 int spaceHeight = keyHeight;
 
 int firstSecondGutter = secondY - firstY - keyHeight;
 int secondThirdGutter = thirdY - secondY - keyHeight;
 int thirdSpaceGutter = spaceY - thirdY - spaceHeight;
-int margin = 2;
+int margin = DPIofYourDeviceScreen/60; // originally 2, from 120/60
 
 // for the enlargement pop up
-int popWidth = 30;
-int popHeight = 36;
-int popYOffset = 28;
+int popWidth = int(30*scalingFactor);
+int popHeight = int(36*scalingFactor);
+int popYOffset = int(28*scalingFactor);
+
+int xOffset = int(DPIofYourDeviceScreen/120); // originally 1
 
 //You can modify anything in here. This is just a basic implementation.
 void setup()
@@ -66,8 +70,9 @@ void setup()
   Collections.shuffle(Arrays.asList(phrases), new Random()); //randomize the order of the phrases with no seed
   //Collections.shuffle(Arrays.asList(phrases), new Random(100)); //randomize the order of the phrases with seed 100; same order every time, useful for testing
  
-  orientation(LANDSCAPE); //can also be PORTRAIT - sets orientation on android device
-  size(3040, 1440); //Sets the size of the app. You should modify this to your device's native size. Many phones today are 1080 wide by 1920 tall.
+  orientation(PORTRAIT); //can also be PORTRAIT - sets orientation on android device
+  //size(1080, 2220); //Sets the size of the app. You should modify this to your device's native size. Many phones today are 1080 wide by 1920 tall.
+  size(800, 800);
   textFont(createFont("Arial", 20)); //set the font to arial 24. Creating fonts is expensive, so make difference sizes once in setup, not draw
   noStroke(); //my code doesn't use any strokes
 }
@@ -99,12 +104,12 @@ void draw()
   
   drawWatch(); //draw watch background
   fill(100);
-  rect(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2, sizeOfInputArea, sizeOfInputArea); //input area should be 1" by 1"
+  rect(width/2-sizeOfInputArea/2+xOffset, height/2-sizeOfInputArea/2, sizeOfInputArea, sizeOfInputArea); //input area should be 1" by 1"
   
   // draw qwerty keyboard
   
   pushMatrix();
-  translate(width/2+2, height/2);
+  translate(width/2+xOffset, height/2);
   int leftLedge = int(-sizeOfInputArea/2);
   textAlign(LEFT, TOP); //https://processing.org/reference/textAlign_.html
   textSize(keyHeight-2);
@@ -136,7 +141,7 @@ void draw()
   fill(255);
   rect(leftLedge + spaceOffset, spaceY, spaceWidth, spaceHeight, 2);
   fill(0);
-  text("space", leftLedge + spaceOffset + 35, spaceY);
+  text("space", leftLedge + spaceOffset + int(DPIofYourDeviceScreen/3.4285714), spaceY); // originally +35
   
   
   // draw the enlarged selected character
@@ -208,7 +213,7 @@ boolean didMouseHoverMatrix(float x, float y, float w, float h) //simple functio
 
 void mouseMoved() {
   pushMatrix();
-  translate(width/2+2, height/2);
+  translate(width/2 + xOffset, height/2);
   
   int leftLedge = int(-sizeOfInputArea/2);
 

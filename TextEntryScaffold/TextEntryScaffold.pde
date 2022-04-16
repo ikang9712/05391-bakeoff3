@@ -150,6 +150,12 @@ void draw()
   fill(0);
   text("space", leftLedge + spaceOffset + int(DPIofYourDeviceScreen/3.4285714), spaceY); // originally +35
   
+  // big remove bar
+  fill(255);
+  rect(leftLedge + spaceOffset, spaceY-int(DPIofYourDeviceScreen/1.3333333), spaceWidth, spaceHeight, int(DPIofYourDeviceScreen/60));
+  fill(0);
+  text("remove", leftLedge + spaceOffset + int(DPIofYourDeviceScreen/3.4285714), spaceY-int(DPIofYourDeviceScreen/1.3333333)); // 
+
   
   // draw the enlarged selected character
   if(letterSelected){ 
@@ -280,6 +286,17 @@ void mouseDragged() {
     return;
   }
   
+  // big remove bar
+   if(didMouseHoverMatrix(leftLedge, spaceY-int(DPIofYourDeviceScreen/1.3333333),spaceWidth, spaceHeight)) {
+    currentLetter = '<';
+    letterSelected = true;
+    //removeSelected = true;
+    currCenterX = 0;
+    currCenterY = spaceY-int(DPIofYourDeviceScreen/1.3333333);
+    popMatrix();
+    return;
+  }
+  
   // didn't recognize any keys being hit
   letterSelected = false;
   popMatrix();
@@ -287,7 +304,13 @@ void mouseDragged() {
 
 void mouseReleased(){
   if(letterSelected){
-    currentTyped+=currentLetter;
+    if(currentLetter == '<') {
+      if(currentTyped.length()!=0) {
+        currentTyped = currentTyped.substring(0, currentTyped.length()-1);
+      }  
+    } else {
+        currentTyped+=currentLetter;
+    }
     letterSelected = false;
   }
 }

@@ -13,14 +13,7 @@ float lettersExpectedTotal = 0; //a running total of the number of letters expec
 float errorsTotal = 0; //a running total of the number of errors (when hitting next)
 String currentPhrase = ""; //the current target phrase
 String currentTyped = ""; //what the user has typed so far
-
-// ANDROID DEV
-final int DPIofYourDeviceScreen = 411; //you will need to look up the DPI or PPI of your device to make sure you get the right scale. Or play around with this value.
-
-// PC DEV
-// final int DPIofYourDeviceScreen = 120; 
-
-
+final int DPIofYourDeviceScreen = 120; //you will need to look up the DPI or PPI of your device to make sure you get the right scale. Or play around with this value.
 final float sizeOfInputArea = DPIofYourDeviceScreen*1; //aka, 1.0 inches square!
 PImage watch;
 PImage finger;
@@ -31,40 +24,36 @@ boolean letterSelected = false;
 int currCenterX = 0;
 int currCenterY = 0; 
 
-float scalingFactor = DPIofYourDeviceScreen/120; // 120 = original dpi during pc development
-
 char[] firstRow = {'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'};
 char[] secondRow = {'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'};
 char[] thirdRow = {'z', 'x', 'c', 'v', 'b', 'n', 'm'};
 
 // offsets from the left ledge of the input area
-int firstOffset = int(DPIofYourDeviceScreen/120); // originally 1
-int secondOffset = int(DPIofYourDeviceScreen/20); // originally 6
-int thirdOffset = int(DPIofYourDeviceScreen/6.6666666); // originally 18
-int spaceOffset = int(DPIofYourDeviceScreen/12); // originally 10
+int firstOffset = 0;
+int secondOffset = 5;
+int thirdOffset = 18;
+int spaceOffset = 9;
 
 // from the center of the screen
-int firstY = int(DPIofYourDeviceScreen/-17.142857); // originally -7
-int secondY = int(DPIofYourDeviceScreen/12); // originally 10
-int thirdY = int(DPIofYourDeviceScreen/4.444444); // originally 27
-int spaceY = int(DPIofYourDeviceScreen/2.666667); // originally 45
+int firstY = -20;
+int secondY = 0;
+int thirdY = 20;
+int spaceY = 40;
 
-int keyWidth = int(DPIofYourDeviceScreen/12); // originally 10, from 120/12
-int keyHeight = int(DPIofYourDeviceScreen/8.5714); // originally 14, 120/8.5714
-int spaceWidth = int(DPIofYourDeviceScreen/1.2); // originally 100
+int keyWidth = 10;
+int keyHeight = 14;
+int spaceWidth = 100;
 int spaceHeight = keyHeight;
 
 int firstSecondGutter = secondY - firstY - keyHeight;
 int secondThirdGutter = thirdY - secondY - keyHeight;
 int thirdSpaceGutter = spaceY - thirdY - spaceHeight;
-int margin = DPIofYourDeviceScreen/60; // originally 2, from 120/60
+int margin = 2;
 
 // for the enlargement pop up
-int popWidth = int(DPIofYourDeviceScreen/4); // originally 30
-int popHeight = int(DPIofYourDeviceScreen/3.333333); // originally 36
-int popYOffset = int(DPIofYourDeviceScreen/2.6666666); // originally 45
-
-int xOffset = int(DPIofYourDeviceScreen/120); // originally 1
+int popWidth = 30;
+int popHeight = 36;
+int popYOffset = 28;
 
 //You can modify anything in here. This is just a basic implementation.
 void setup()
@@ -76,11 +65,9 @@ void setup()
   Collections.shuffle(Arrays.asList(phrases), new Random()); //randomize the order of the phrases with no seed
   //Collections.shuffle(Arrays.asList(phrases), new Random(100)); //randomize the order of the phrases with seed 100; same order every time, useful for testing
  
-  orientation(PORTRAIT); //can also be PORTRAIT - sets orientation on android device
-  size(1080, 2280); //Sets the size of the app. You should modify this to your device's native size. Many phones today are 1080 wide by 1920 tall.
-  // size(800, 800);
-  textFont(createFont("Arial", int(DPIofYourDeviceScreen/10))); //set the font to arial 24. Creating fonts is expensive, so make difference sizes once in setup, not draw
-  //^ originally 20
+  orientation(LANDSCAPE); //can also be PORTRAIT - sets orientation on android device
+  size(800, 800); //Sets the size of the app. You should modify this to your device's native size. Many phones today are 1080 wide by 1920 tall.
+  textFont(createFont("Arial", 20)); //set the font to arial 24. Creating fonts is expensive, so make difference sizes once in setup, not draw
   noStroke(); //my code doesn't use any strokes
 }
 
@@ -94,106 +81,91 @@ void draw()
   {
     fill(0);
     textAlign(CENTER);
-    text("Trials complete!", width/2,int(DPIofYourDeviceScreen/0.6)); //output
-    text("Total time taken: " + (finishTime - startTime),width/2,int(DPIofYourDeviceScreen/0.6)+int(DPIofYourDeviceScreen/6)*1); //output
-    text("Total letters entered: " + lettersEnteredTotal,width/2,int(DPIofYourDeviceScreen/0.6)+int(DPIofYourDeviceScreen/6)*2); //output
-    text("Total letters expected: " + lettersExpectedTotal,width/2,int(DPIofYourDeviceScreen/0.6)+int(DPIofYourDeviceScreen/6)*3); //output
-    text("Total errors entered: " + errorsTotal,width/2,int(DPIofYourDeviceScreen/0.6)+int(DPIofYourDeviceScreen/6)*4); //output
+    text("Trials complete!",400,200); //output
+    text("Total time taken: " + (finishTime - startTime),400,220); //output
+    text("Total letters entered: " + lettersEnteredTotal,400,240); //output
+    text("Total letters expected: " + lettersExpectedTotal,400,260); //output
+    text("Total errors entered: " + errorsTotal,400,280); //output
     float wpm = (lettersEnteredTotal/5.0f)/((finishTime - startTime)/60000f); //FYI - 60K is number of milliseconds in minute
-    text("Raw WPM: " + wpm,width/2,int(DPIofYourDeviceScreen/0.6)+int(DPIofYourDeviceScreen/6)*5); //output
+    text("Raw WPM: " + wpm,400,300); //output
     float freebieErrors = lettersExpectedTotal*.05; //no penalty if errors are under 5% of chars
-    text("Freebie errors: " + nf(freebieErrors,1,3),width/2,int(DPIofYourDeviceScreen/0.6)+int(DPIofYourDeviceScreen/6)*6); //output
+    text("Freebie errors: " + nf(freebieErrors,1,3),400,320); //output
     float penalty = max(errorsTotal-freebieErrors, 0) * .5f;
-    text("Penalty: " + penalty,width/2,int(DPIofYourDeviceScreen/0.6)+int(DPIofYourDeviceScreen/6)*7);
-    text("WPM w/ penalty: " + (wpm-penalty),width/2, int(DPIofYourDeviceScreen/0.6)+int(DPIofYourDeviceScreen/6)*8); //yes, minus, because higher WPM is better
+    text("Penalty: " + penalty,400,340);
+    text("WPM w/ penalty: " + (wpm-penalty),400,360); //yes, minus, because higher WPM is better
     return;
   }
   
   drawWatch(); //draw watch background
   fill(100);
-  rect(width/2-sizeOfInputArea/2+xOffset, height/2-sizeOfInputArea/2, sizeOfInputArea, sizeOfInputArea); //input area should be 1" by 1"
+  rect(width/2-sizeOfInputArea/2, height/2-sizeOfInputArea/2, sizeOfInputArea, sizeOfInputArea); //input area should be 1" by 1"
   
   // draw qwerty keyboard
   
   pushMatrix();
-  translate(width/2+xOffset, height/2);
+  translate(width/2+2, height/2);
   int leftLedge = int(-sizeOfInputArea/2);
   textAlign(LEFT, TOP); //https://processing.org/reference/textAlign_.html
-  textSize(keyHeight-int(DPIofYourDeviceScreen/60)); // originally -2
+  textSize(keyHeight-2);
   // first row
   for(int i = 0; i<firstRow.length; i++) { // qwertyuiop
     fill(255);
-    rect(leftLedge + firstOffset + keyWidth*i + margin*i, firstY, keyWidth, keyHeight, int(DPIofYourDeviceScreen/60)); // corner radius orig 2
+    rect(leftLedge + firstOffset + keyWidth*i + margin*i, firstY, keyWidth, keyHeight, 2);
     fill(0);
-    text(firstRow[i], leftLedge + firstOffset + keyWidth*i + margin*i+int(DPIofYourDeviceScreen/120), firstY); // 
+    text(firstRow[i], leftLedge + firstOffset + keyWidth*i + margin*i+1, firstY-2);
   }
   
   // second row
   for(int i = 0; i<secondRow.length; i++) { // asdfghjkl
     fill(255);
-    rect(leftLedge + secondOffset + keyWidth*i + margin*i, secondY, keyWidth, keyHeight, int(DPIofYourDeviceScreen/60)); 
+    rect(leftLedge + secondOffset + keyWidth*i + margin*i, secondY, keyWidth, keyHeight, 2);
     fill(0);
-    text(secondRow[i], leftLedge + secondOffset + keyWidth*i + margin*i+ int(DPIofYourDeviceScreen/120), secondY);
+    text(secondRow[i], leftLedge + secondOffset + keyWidth*i + margin*i+1, secondY-1);
   }
     
   // third row
   for(int i = 0; i<thirdRow.length; i++) { // zxcvbnm
     fill(255);
-    rect(leftLedge + thirdOffset + keyWidth*i + margin*i, thirdY, keyWidth, keyHeight, int(DPIofYourDeviceScreen/60));
+    rect(leftLedge + thirdOffset + keyWidth*i + margin*i, thirdY, keyWidth, keyHeight, 2);
     fill(0);
-    text(thirdRow[i], leftLedge + thirdOffset + keyWidth*i + margin*i+ int(DPIofYourDeviceScreen/120), thirdY); // originally thirdY-1
+    text(thirdRow[i], leftLedge + thirdOffset + keyWidth*i + margin*i+1, thirdY-1);
   }
   
   // big space bar
-  if(letterSelected && currentLetter == ' ') {
-    fill(0, 255, 255, 255);
-  } else {
-    fill(0, 255, 255, 100);
-  }
-  rect(leftLedge + spaceOffset, spaceY, spaceWidth, spaceHeight, int(DPIofYourDeviceScreen/60));
+  fill(255);
+  rect(leftLedge + spaceOffset, spaceY, spaceWidth, spaceHeight, 2);
   fill(0);
-  text("space", leftLedge + spaceOffset + int(DPIofYourDeviceScreen/3.4285714), spaceY); // originally +35
+  text("space", leftLedge + spaceOffset + 35, spaceY);
   
-  // big remove bar
-  if(letterSelected && currentLetter == '<') {
-    fill(255, 0, 0, 255);
-  } else {
-    fill(255, 0, 0, 100);
-  }
-  
-  rect(leftLedge,0-sizeOfInputArea/2, sizeOfInputArea, sizeOfInputArea/2 + firstY -int(DPIofYourDeviceScreen/20), int(DPIofYourDeviceScreen/60));
-  fill(0);
-  text("remove", leftLedge + spaceOffset + int(DPIofYourDeviceScreen/3.4285714), spaceY-int(DPIofYourDeviceScreen/1.3333333)); // 
-
   
   // draw the enlarged selected character
-  if(letterSelected && currentLetter != '<'){ 
-      // draw the pop up box
-      fill(50);
-      int popX = currCenterX - popWidth/2;
-      int popY = currCenterY - popHeight/2 - popYOffset;
-      if(popX < leftLedge) { popX = leftLedge; } // move it back in the watch area
-      if(popY < 0-sizeOfInputArea/2) { popY = int(0-sizeOfInputArea/2); } // move it back in the watch area
-      if(popX + popWidth > leftLedge + sizeOfInputArea) { popX = int(leftLedge + sizeOfInputArea - popWidth); }
-      rect(popX, popY, popWidth, popHeight,  int(DPIofYourDeviceScreen/20)); // originally corner radius = 6
-      
-      // little triangle beneath the pop up box
-      triangle(popX+int(DPIofYourDeviceScreen/24), popY+popHeight, popX+popWidth-int(DPIofYourDeviceScreen/24), popY+popHeight, currCenterX, currCenterY); // originally + 5
-      
-      textSize(int(DPIofYourDeviceScreen/4)); // originally 30
-      fill(255);
-      text(currentLetter, popX+int(DPIofYourDeviceScreen/15), popY); // originally + 8
-   
+  if(letterSelected){ 
+    
+    // draw the pop up box
+    fill(50);
+    int popX = currCenterX - popWidth/2;
+    int popY = currCenterY - popHeight/2 - popYOffset;
+    if(popX < leftLedge) { popX = leftLedge; } // move it back in the watch area
+    if(popX + popWidth > leftLedge + sizeOfInputArea) { popX = int(leftLedge + sizeOfInputArea - popWidth); }
+    rect(popX, popY, popWidth, popHeight, 6);
+    
+    // little triangle beneath the pop up box
+    triangle(popX+5, popY+popHeight, popX+popWidth-5, popY+popHeight, currCenterX, currCenterY);
+    
+    // draw the enlarged letter
+    textSize(30);
+    fill(255);
+    text(currentLetter, popX+7, popY);
   }
   
   popMatrix();
-  textSize(int(DPIofYourDeviceScreen/10)); // reset text size 
+  textSize(20); // reset text size
 
   if (startTime==0 & !mousePressed)
   {
     fill(128);
-    textAlign(LEFT);
-    text("Click to start time!", width/20, height/4); //display this messsage until the user clicks!
+    textAlign(CENTER);
+    text("Click to start time!", 280, 150); //display this messsage until the user clicks!
   }
 
   if (startTime==0 & mousePressed)
@@ -204,19 +176,18 @@ void draw()
   if (startTime!=0)
   {
     //draw very basic next button
-    fill(0, 255, 0);
-   
-    rect(width/2+xOffset-sizeOfInputArea/2, height/2+sizeOfInputArea/2+int(DPIofYourDeviceScreen/2), sizeOfInputArea, sizeOfInputArea); //draw next button
+    fill(255, 0, 0);
+    rect(600, 600, 200, 200); //draw next button
     fill(255);
-    text("NEXT > ", width/2+xOffset-sizeOfInputArea/2+int(DPIofYourDeviceScreen/4), height/2+sizeOfInputArea/2+int(DPIofYourDeviceScreen/1.2)); //draw next label
+    text("NEXT > ", 650, 650); //draw next label
     
     //feel free to change the size and position of the target/entered phrases and next button 
     textAlign(LEFT); //align the text left
     fill(128);
-    text("Phrase " + (currTrialNum+1) + " of " + totalTrialNum, width/20, height/4); //draw the trial count
+    text("Phrase " + (currTrialNum+1) + " of " + totalTrialNum, 70, 50); //draw the trial count
     fill(128);
-    text("Target:   " + currentPhrase, width/20, height/4+int(DPIofYourDeviceScreen/7.5)); //draw the target string
-    text("Entered:  " + currentTyped +"|", width/20, height/4+int(DPIofYourDeviceScreen/7.5)*2); //draw what the user has entered thus far 
+    text("Target:   " + currentPhrase, 70, 100); //draw the target string
+    text("Entered:  " + currentTyped +"|", 70, 140); //draw what the user has entered thus far 
   }
  
  }
@@ -229,14 +200,14 @@ boolean didMouseClick(float x, float y, float w, float h) //simple function to d
 
 boolean didMouseHoverMatrix(float x, float y, float w, float h) //simple function to do hit testing
 {
-  x += width/2+xOffset;
-  y += height/2;
+  x += width/2+2;
+  y += height/2+2;
   return (mouseX >= x && mouseX<=x+w && mouseY>=y && mouseY<=y+h); //check to see if it is in button bounds
 }
 
-void mouseDragged() {
+void mouseMoved() {
   pushMatrix();
-  translate(width/2 + xOffset, height/2);
+  translate(width/2+2, height/2);
   
   int leftLedge = int(-sizeOfInputArea/2);
 
@@ -294,42 +265,20 @@ void mouseDragged() {
     return;
   }
   
-  // big remove bar
-   if(didMouseHoverMatrix(leftLedge, 0-sizeOfInputArea/2, sizeOfInputArea, sizeOfInputArea/2 - firstY)) {
-    currentLetter = '<';
-    letterSelected = true;
-    //removeSelected = true;
-    currCenterX = 0;
-    currCenterY = spaceY-int(DPIofYourDeviceScreen/1.3333333);
-    popMatrix();
-    return;
-  }
-  
   // didn't recognize any keys being hit
   letterSelected = false;
   popMatrix();
 }
 
-void mouseReleased(){
-  if(letterSelected){
-    if(currentLetter == '<') {
-      if(currentTyped.length()!=0) {
-        currentTyped = currentTyped.substring(0, currentTyped.length()-1);
-      }  
-    } else {
-        currentTyped+=currentLetter;
-    }
-    letterSelected = false;
-  }
-}
-
 //my terrible implementation you can entirely replace
 void mousePressed()
 {
-  mouseDragged();
+  if(letterSelected){
+    currentTyped+=currentLetter;
+  }
 
   //You are allowed to have a next button outside the 1" area
-  if (didMouseClick(width/2+xOffset-sizeOfInputArea/2, height/2+sizeOfInputArea/2+int(DPIofYourDeviceScreen/2), sizeOfInputArea, sizeOfInputArea)) //check if click is in next button
+  if (didMouseClick(600, 600, 200, 200)) //check if click is in next button
   {
     nextTrial(); //if so, advance to next trial
   }
